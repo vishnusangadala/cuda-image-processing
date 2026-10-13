@@ -1,0 +1,33 @@
+{
+  "version": 6,
+  "configurePresets": [
+    {
+      "name": "cpu",
+      "displayName": "CPU-only release",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/cpu",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CIP_ENABLE_CUDA": "OFF"
+      }
+    },
+    {
+      "name": "cuda",
+      "displayName": "CUDA release",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/cuda",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CIP_ENABLE_CUDA": "ON"
+      }
+    }
+  ],
+  "buildPresets": [
+    { "name": "cpu", "configurePreset": "cpu" },
+    { "name": "cuda", "configurePreset": "cuda" }
+  ],
+  "testPresets": [
+    { "name": "cpu", "configurePreset": "cpu", "output": { "outputOnFailure": true } },
+    { "name": "cuda", "configurePreset": "cuda", "output": { "outputOnFailure": true } }
+  ]
+}
