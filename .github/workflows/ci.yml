@@ -4,6 +4,10 @@ on:
   push:
   pull_request:
 
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   cpu-build-and-test:
     runs-on: ubuntu-22.04
@@ -22,11 +26,15 @@ jobs:
 
   cuda-compile:
     runs-on: ubuntu-22.04
+    timeout-minutes: 15
     container: nvidia/cuda:12.6.3-devel-ubuntu22.04
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies
-        run: apt-get update && apt-get install -y cmake ninja-build libopencv-dev
+        run: >-
+          apt-get update &&
+          env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends
+          cmake ninja-build libopencv-core-dev libopencv-imgproc-dev libopencv-imgcodecs-dev
       - name: Configure CUDA build
         run: >-
           cmake -S . -B build/cuda-ci -G Ninja
