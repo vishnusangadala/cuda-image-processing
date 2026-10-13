@@ -19,3 +19,19 @@ jobs:
         run: ctest --preset cpu
       - name: Check Python tools
         run: python3 -m py_compile tools/generate_sample.py tools/benchmark.py
+
+  cuda-compile:
+    runs-on: ubuntu-22.04
+    container: nvidia/cuda:12.6.3-devel-ubuntu22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: apt-get update && apt-get install -y cmake ninja-build libopencv-dev
+      - name: Configure CUDA build
+        run: >-
+          cmake -S . -B build/cuda-ci -G Ninja
+          -DCMAKE_BUILD_TYPE=Release
+          -DCIP_ENABLE_CUDA=ON
+          -DCMAKE_CUDA_ARCHITECTURES=75
+      - name: Compile CUDA backend
+        run: cmake --build build/cuda-ci
