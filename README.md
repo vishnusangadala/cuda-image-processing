@@ -27,7 +27,7 @@ The CUDA Gaussian and Sobel kernels cooperatively load each block plus its halo 
 ## Requirements
 
 - Linux with a C++17 compiler
-- CMake 3.24 or newer and Ninja
+- CMake 3.22 or newer and Ninja
 - OpenCV 4.5 or newer (`core`, `imgproc`, and `imgcodecs`)
 - For GPU execution: an NVIDIA GPU and CUDA toolkit (compute capability 6.0+)
 - Python 3 only for sample generation and the benchmark sweep
